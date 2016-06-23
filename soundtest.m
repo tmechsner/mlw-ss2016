@@ -2,66 +2,6 @@ clear; clc; close all;
 addpath('fastica');
 
 %%%%%%%%%%%%%%%
-% Live recorded Soundfiles
-%%%%%%%%%%%%%%%
-
-%Read Audiofiles 
-[signal(1,:), fs] = audioread('shifted - live_source1.wav')
-[signal(2,:), fs] = audioread('shifted - live_source2.wav');
-
-% Mix signals
-mixmat = rand(size(signal,1));
-mixedsig = mixmat * signal;
-
-decompose = fastica(mixedsig);
-
-source1 = decompose(1,:);
-source2 = decompose(2,:);
-
-norm1 = source1/10;
-norm2 = source2/10;
-
-% Time scale (x axis)
-t = [1/fs:1/fs:length(norm1)/fs];
-
-figure
-subplot(3,2,1)
- plot(t, mixedsig(1, :))
- ylim([-1 1])
- xlim([0 6])
- title('Mixed sources 1')
-subplot(3,2,2)
- plot(t, mixedsig(2, :))
- ylim([-1 1])
- xlim([0 6])
- title('Mixed sources 2')
-subplot(3,2,3)
- plot(t, norm1)
- ylim([-1 1])
- xlim([0 6])
- title('Computed source 1')
-subplot(3,2,4)
- plot(t, norm2)
- ylim([-1 1])
- xlim([0 6])
- title('Computed source 2')
-subplot(3,2,5)
- plot(t, signal(1,:))
- ylim([-1 1])
- xlim([0 6])
- title('Original source 1')
-subplot(3,2,6)
- plot(t, signal(2,:))
- ylim([-1 1])
- xlim([0 6])
- title('Original source 2')
- 
-pause;
-close all;
-clear;
-
-
-%%%%%%%%%%%%%%%
 % Soundfiles as demonstrated in the lecture
 %%%%%%%%%%%%%%%
 
@@ -121,7 +61,70 @@ close all;
 clear;
 
 %%%%%%%%%%%%%%%
-% Now we use generated Signals because they can be inspected more easily
+% Next we tried live recorded sounds
+%%%%%%%%%%%%%%%
+
+%Read Audiofiles 
+[signal(1,:), fs] = audioread('live_source1_mono.wav');
+[signal(2,:), fs] = audioread('live_source2_mono.wav');
+
+% Mix signals
+mixmat = rand(size(signal,1));
+mixedsig = mixmat * signal;
+
+decompose = fastica(mixedsig);
+
+source1 = decompose(1,:);
+source2 = decompose(2,:);
+
+norm1 = source1/10;
+norm2 = source2/10;
+
+% Time scale (x axis)
+t = [1/fs:1/fs:length(norm1)/fs];
+
+figure
+subplot(3,2,1)
+ plot(t, mixedsig(1, :))
+ ylim([-1 1])
+ xlim([0 6])
+ title('Mixed sources 1')
+subplot(3,2,2)
+ plot(t, mixedsig(2, :))
+ ylim([-1 1])
+ xlim([0 6])
+ title('Mixed sources 2')
+subplot(3,2,3)
+ plot(t, norm1)
+ ylim([-1 1])
+ xlim([0 6])
+ title('Computed source 1')
+subplot(3,2,4)
+ plot(t, norm2)
+ ylim([-1 1])
+ xlim([0 6])
+ title('Computed source 2')
+subplot(3,2,5)
+ plot(t, signal(1,:))
+ ylim([-1 1])
+ xlim([0 6])
+ title('Original source 1')
+subplot(3,2,6)
+ plot(t, signal(2,:))
+ ylim([-1 1])
+ xlim([0 6])
+ title('Original source 2')
+ 
+pause;
+
+sound(norm1, fs);
+pause;
+
+close all;
+clear;
+
+%%%%%%%%%%%%%%%
+% As this did not work we now use generated Signals because they can be inspected more easily
 %%%%%%%%%%%%%%%
 
 [signal,mixedsig]=demosig();
@@ -178,7 +181,9 @@ close all;
 clear;
 
 %%%%%%%%%%%%%%%
-% Now some noise to the mix -> bad result
+% Now some noise to the mix -> bad result.
+% This might be the reason why our own recordings did not work: Hall, noisy
+% microphones, etc.
 %%%%%%%%%%%%%%%
 
 [signal,mixedsig]=demosig();
