@@ -1,38 +1,37 @@
-clear;
+clear; clc; close all;
 addpath('fastica');
 
+%%%%%%%%%%%%%%%
+% Live recorded Soundfiles
+%%%%%%%%%%%%%%%
+
 %Read Audiofiles 
-[Y, fs] = audioread('source3.wav')
-[X, fs] = audioread('source7.wav');
+[signal(1,:), fs] = audioread('shifted - live_source1.wav')
+[signal(2,:), fs] = audioread('shifted - live_source2.wav');
 
-%
-t = [1/fs:1/fs:length(Y)/fs];
+% Mix signals
+mixmat = rand(size(signal,1));
+mixedsig = mixmat * signal;
 
-newSound1 = 0.5*X' + 0.5*Y';
-newSound2 = 0.65*X' + 0.35*Y';
-
-for i=1:50000 signal(1,i)=newSound1(i); end
-for i=1:50000 signal(2,i)=newSound2(i); end
-
-decompose = fastica(signal);
+decompose = fastica(mixedsig);
 
 source1 = decompose(1,:);
 source2 = decompose(2,:);
 
-% source1 = source1;
-% source2 = source2;
-
 norm1 = source1/10;
 norm2 = source2/10;
 
+% Time scale (x axis)
+t = [1/fs:1/fs:length(norm1)/fs];
+
 figure
 subplot(3,2,1)
- plot(t, signal(1, :))
+ plot(t, mixedsig(1, :))
  ylim([-1 1])
  xlim([0 6])
  title('Mixed sources 1')
 subplot(3,2,2)
- plot(t, signal(2, :))
+ plot(t, mixedsig(2, :))
  ylim([-1 1])
  xlim([0 6])
  title('Mixed sources 2')
@@ -47,12 +46,164 @@ subplot(3,2,4)
  xlim([0 6])
  title('Computed source 2')
 subplot(3,2,5)
- plot(t, Y)
+ plot(t, signal(1,:))
  ylim([-1 1])
  xlim([0 6])
  title('Original source 1')
 subplot(3,2,6)
- plot(t, X)
+ plot(t, signal(2,:))
  ylim([-1 1])
  xlim([0 6])
  title('Original source 2')
+ 
+pause;
+close all;
+clear;
+
+
+%%%%%%%%%%%%%%%
+% Soundfiles as demonstrated in the lecture
+%%%%%%%%%%%%%%%
+
+%Read Audiofiles 
+[signal(1,:), fs] = audioread('source3.wav')
+[signal(2,:), fs] = audioread('source7.wav');
+
+% Mix signals
+mixmat = rand(size(signal,1));
+mixedsig = mixmat * signal;
+
+decompose = fastica(mixedsig);
+
+source1 = decompose(1,:);
+source2 = decompose(2,:);
+
+norm1 = source1/10;
+norm2 = source2/10;
+
+% Time scale (x axis)
+t = [1/fs:1/fs:length(norm1)/fs];
+
+figure
+subplot(3,2,1)
+ plot(t, mixedsig(1, :))
+ ylim([-1 1])
+ xlim([0 6])
+ title('Mixed sources 1')
+subplot(3,2,2)
+ plot(t, mixedsig(2, :))
+ ylim([-1 1])
+ xlim([0 6])
+ title('Mixed sources 2')
+subplot(3,2,3)
+ plot(t, norm1)
+ ylim([-1 1])
+ xlim([0 6])
+ title('Computed source 1')
+subplot(3,2,4)
+ plot(t, norm2)
+ ylim([-1 1])
+ xlim([0 6])
+ title('Computed source 2')
+subplot(3,2,5)
+ plot(t, signal(1,:))
+ ylim([-1 1])
+ xlim([0 6])
+ title('Original source 1')
+subplot(3,2,6)
+ plot(t, signal(2,:))
+ ylim([-1 1])
+ xlim([0 6])
+ title('Original source 2')
+ 
+pause;
+close all;
+clear;
+
+%%%%%%%%%%%%%%%
+% Now we use generated Signals because they can be inspected more easily
+%%%%%%%%%%%%%%%
+
+[signal,mixedsig]=demosig();
+
+decompose = fastica(mixedsig);
+
+source1 = decompose(1,:);
+source2 = decompose(2,:);
+
+norm1 = source1/10;
+norm2 = source2/10;
+
+icaplot('complot', signal, 0, 0, 0, 'Original Signals')
+pause;
+icaplot('complot', mixedsig, 0, 0, 0, 'Mixed Signals')
+pause;
+icaplot('complot', decompose, 0, 0, 0, 'Decomposed Signals')
+
+pause;
+close all;
+clear;
+
+%%%%%%%%%%%%%%%
+% Now we add some noise to the original sources before mixing them ->
+% result better than sources!
+%%%%%%%%%%%%%%%
+
+[signal,mixedsig]=demosig();
+
+noisySignal = ones(size(signal));
+for i = 1 : size(signal,1)
+    % Add noise (limited to 0.5 times the unsigned mean)
+    noisySignal(i,:) = signal(i,:) + (rand(size(signal(i,:))) - 0.5) * mean(abs(signal(i,:)));
+end
+mixmat = rand(size(signal,1));
+mixedNoisySignals = mixmat * signal;
+
+decompose = fastica(mixedNoisySignals);
+
+source1 = decompose(1,:);
+source2 = decompose(2,:);
+
+norm1 = source1/10;
+norm2 = source2/10;
+
+icaplot('complot', noisySignal, 0, 0, 0, 'Original noisy Signals')
+pause;
+icaplot('complot', mixedNoisySignals, 0, 0, 0, 'Mixed noisy Signals')
+pause;
+icaplot('complot', decompose, 0, 0, 0, 'Decomposed Signals')
+
+pause;
+close all;
+clear;
+
+%%%%%%%%%%%%%%%
+% Now some noise to the mix -> bad result
+%%%%%%%%%%%%%%%
+
+[signal,mixedsig]=demosig();
+
+noisyMix = ones(size(mixedsig));
+for i = 1 : size(mixedsig,1)
+    % Add noise (limited to 0.5 times the unsigned mean)
+    noisyMix(i,:) = mixedsig(i,:) + (rand(size(mixedsig(i,:))) - 0.5) * mean(abs(mixedsig(i,:)));
+end
+
+decompose = fastica(noisyMix);
+
+source1 = decompose(1,:);
+source2 = decompose(2,:);
+
+norm1 = source1/10;
+norm2 = source2/10;
+
+icaplot('complot', signal, 0, 0, 0, 'Original Signals')
+pause;
+icaplot('complot', noisyMix, 0, 0, 0, 'Noisy mixed Signals')
+pause;
+icaplot('complot', decompose, 0, 0, 0, 'Decomposed Signals')
+
+pause;
+close all;
+clear;
+
