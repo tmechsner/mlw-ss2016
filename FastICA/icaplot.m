@@ -1,4 +1,5 @@
 function icaplot(mode, varargin);
+figure;
 %ICAPLOT - plot signals in various ways
 %
 % ICAPLOT is mainly for plottinf and comparing the mixed signals and
