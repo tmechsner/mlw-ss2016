@@ -29,6 +29,8 @@ function [ meanErrors, stdErrors ] = matchAndEval( signal, decompose )
                 matchIndex = i;
             end
         end
+        max(signal(j,:))
+        max(decompose(matchIndex,:))
         fprintf('%d matches with %d, mean error is %f, std error is %f \n', j, matchIndex, meanError, stdError);
         meanErrors(j) = meanError;
         stdErrors(j) = stdError;
