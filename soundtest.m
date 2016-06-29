@@ -166,19 +166,22 @@ if(ismember(3,execExperiments))
     dlg_title = 'Signal / Input comparison';
     num_lines = 1;
     
-    pause;
-    answer = inputdlg(prompt,dlg_title,num_lines);
-        n1 = str2num(answer{1});
-        n2 = str2num(answer{2});
+    [meanErrors, stdErrors] = matchAndEval(signal, decompose);
+    fprintf('Total mean error is %f, std deviation is %f\n', mean(meanErrors), mean(stdErrors));
     
-    while n1 > 0
-        icaplot('sumerror', signal, n1, decompose, n2, 0, 0, 'Test')
-        pause;
+    pause;
+    %answer = inputdlg(prompt,dlg_title,num_lines);
+    %    n1 = str2num(answer{1});
+    %    n2 = str2num(answer{2});
+    
+    %while n1 > 0
+    %    icaplot('sumerror', signal, n1, decompose, n2, 0, 0, 'Test')
+    %    pause;
 
-        answer = inputdlg(prompt,dlg_title,num_lines);
-        n1 = str2num(answer{1});
-        n2 = str2num(answer{2});
-    end
+    %    answer = inputdlg(prompt,dlg_title,num_lines);
+    %    n1 = str2num(answer{1});
+    %    n2 = str2num(answer{2});
+    %end
     
     close all;
 end
@@ -205,19 +208,21 @@ if(ismember(4,execExperiments))
     dlg_title = 'Signal / Input comparison';
     num_lines = 1;
     
+    [meanErrors, stdErrors] = matchAndEval(signal, decompose);
+    fprintf('Total mean error is %f, std deviation is %f\n', mean(meanErrors), mean(stdErrors));
+        
     pause;
-    answer = inputdlg(prompt,dlg_title,num_lines);
-        n1 = str2num(answer{1});
-        n2 = str2num(answer{2});
-    
-    while n1 > 0
-        icaplot('sumerror', signal, n1, decompose, n2, 0, 0, 'Test')
-        pause;
-
-        answer = inputdlg(prompt,dlg_title,num_lines);
-        n1 = str2num(answer{1});
-        n2 = str2num(answer{2});
-    end
+%     answer = inputdlg(prompt,dlg_title,num_lines);
+%         n1 = str2num(answer{1});
+%         n2 = str2num(answer{2});
+%     while n1 > 0
+%         icaplot('sumerror', signal, n1, decompose, n2, 0, 0, 'Test')
+%         pause;
+% 
+%         answer = inputdlg(prompt,dlg_title,num_lines);
+%         n1 = str2num(answer{1});
+%         n2 = str2num(answer{2});
+%     end
 
     close all;
 end
@@ -234,6 +239,9 @@ if(ismember(5,execExperiments))
     noisyMix = addNoise(mixedsig, 1.0);
 
     decompose = fastica(noisyMix);
+    
+    [meanErrors, stdErrors] = matchAndEval(signal, decompose);
+    fprintf('Total mean error is %f, std deviation is %f\n', mean(meanErrors), mean(stdErrors));
 
     icaplot('complot', signal, 0, 0, 0, 'Original Signals')
     icaplot('complot', noisyMix, 0, 0, 0, 'Noisy mixed Signals')
@@ -243,19 +251,19 @@ if(ismember(5,execExperiments))
     dlg_title = 'Signal / Input comparison';
     num_lines = 1;
     
-    pause;
-    answer = inputdlg(prompt,dlg_title,num_lines);
-        n1 = str2num(answer{1});
-        n2 = str2num(answer{2});
-    
-    while n1 > 0
-        icaplot('sumerror', signal, n1, decompose, n2, 0, 0, 'Test')
-        pause;
-
-        answer = inputdlg(prompt,dlg_title,num_lines);
-        n1 = str2num(answer{1});
-        n2 = str2num(answer{2});
-    end
+     pause;
+%     answer = inputdlg(prompt,dlg_title,num_lines);
+%         n1 = str2num(answer{1});
+%         n2 = str2num(answer{2});
+%     
+%     while n1 > 0
+%         icaplot('sumerror', signal, n1, decompose, n2, 0, 0, 'Test')
+%         pause;
+% 
+%         answer = inputdlg(prompt,dlg_title,num_lines);
+%         n1 = str2num(answer{1});
+%         n2 = str2num(answer{2});
+%     end
     
     close all;
 end
