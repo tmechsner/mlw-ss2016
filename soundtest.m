@@ -2,6 +2,8 @@ function soundtest(execExperiments)
 
 clc; close all;
 addpath('fastica');
+addpath('drtoolbox');
+addpath('drtoolbox/techniques');
 
 if(ismember(1,execExperiments))
     %%%%%%%%%%%%%%%
@@ -156,12 +158,6 @@ if(ismember(3,execExperiments))
 
     decompose = fastica(mixedsig);
 
-    source1 = decompose(1,:);
-    source2 = decompose(2,:);
-
-    norm1 = source1/10;
-    norm2 = source2/10;
-
      icaplot('complot', signal, 0, 0, 0, 'Original Signals')
      icaplot('complot', mixedsig, 0, 0, 0, 'Mixed Signals')
      icaplot('complot', decompose, 0, 0, 0, 'Decomposed Signals')
@@ -201,12 +197,6 @@ if(ismember(4,execExperiments))
     
     decompose = fastica(mixedNoisySignals);
 
-    source1 = decompose(1,:);
-    source2 = decompose(2,:);
-
-    norm1 = source1/10;
-    norm2 = source2/10;
-
     icaplot('complot', noisySignal, 0, 0, 0, 'Original noisy Signals')
     icaplot('complot', mixedNoisySignals, 0, 0, 0, 'Mixed noisy Signals')
     icaplot('complot', decompose, 0, 0, 0, 'Decomposed Signals')
@@ -245,12 +235,6 @@ if(ismember(5,execExperiments))
 
     decompose = fastica(noisyMix);
 
-    source1 = decompose(1,:);
-    source2 = decompose(2,:);
-
-    norm1 = source1/10;
-    norm2 = source2/10;
-
     icaplot('complot', signal, 0, 0, 0, 'Original Signals')
     icaplot('complot', noisyMix, 0, 0, 0, 'Noisy mixed Signals')
     icaplot('complot', decompose, 0, 0, 0, 'Decomposed Signals')
@@ -272,6 +256,45 @@ if(ismember(5,execExperiments))
         n1 = str2num(answer{1});
         n2 = str2num(answer{2});
     end
+    
+    close all;
+end
+
+if(ismember(6,execExperiments))
+    %%%%%%%%%%%%%%%
+    % 
+    %%%%%%%%%%%%%%%
+
+    [signal,mixedsig]=demosig();
+    
+    mixedsig(1,:) = (mixedsig(1,:) - mean(mixedsig(1,:))) / std(mixedsig(1,:));
+    mixedsig(2,:) = (mixedsig(2,:) - mean(mixedsig(2,:))) / std(mixedsig(2,:));
+    mixedsig(3,:) = (mixedsig(3,:) - mean(mixedsig(3,:))) / std(mixedsig(3,:));
+    mixedsig(4,:) = (mixedsig(4,:) - mean(mixedsig(4,:))) / std(mixedsig(4,:));
+    
+    [decompose,mapping] = compute_mapping(mixedsig', 'PCA', 4);
+
+    icaplot('complot', signal, 0, 0, 0, 'Original Signals')
+    icaplot('complot', mixedsig, 0, 0, 0, 'Mixed Signals')
+    icaplot('complot', decompose', 0, 0, 0, 'Decomposed Signals')
+
+    prompt = {'Enter signal number:','Enter source number:'};
+    dlg_title = 'Signal / Input comparison';
+    num_lines = 1;
+    
+    pause;
+    %answer = inputdlg(prompt,dlg_title,num_lines);
+    %    n1 = str2num(answer{1});
+    %    n2 = str2num(answer{2});
+    
+    %while n1 > 0
+    %    icaplot('sumerror', signal, n1, decompose, n2, 0, 0, 'Test')
+    %    pause;
+%
+ %       answer = inputdlg(prompt,dlg_title,num_lines);
+  %      n1 = str2num(answer{1});
+   %     n2 = str2num(answer{2});
+    %end
     
     close all;
 end
