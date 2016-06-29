@@ -27,11 +27,37 @@ if(ismember(1,execExperiments))
     % Time scale (x axis)
     t = [1/fs:1/fs:length(norm1)/fs];
     
-    icaplot('complot', signal, 0, 0, 0, 'Original Signals')
-    pause;
-    icaplot('complot', mixedsig, 0, 0, 0, 'Noisy mixed Signals')
-    pause;
-    icaplot('complot', decompose, 0, 0, 0, 'Decomposed Signals')
+    figure
+    subplot(3,2,1)
+     plot(t, mixedsig(1, :))
+     ylim([-1 1])
+     xlim([0 6])
+     title('Mixed sources 1')
+    subplot(3,2,2)
+     plot(t, mixedsig(2, :))
+     ylim([-1 1])
+     xlim([0 6])
+     title('Mixed sources 2')
+    subplot(3,2,3)
+     plot(t, norm1)
+     ylim([-1 1])
+     xlim([0 6])
+     title('Computed source 1')
+    subplot(3,2,4)
+     plot(t, norm2)
+     ylim([-1 1])
+     xlim([0 6])
+     title('Computed source 2')
+    subplot(3,2,5)
+     plot(t, signal(1,:))
+     ylim([-1 1])
+     xlim([0 6])
+     title('Original source 1')
+    subplot(3,2,6)
+     plot(t, signal(2,:))
+     ylim([-1 1])
+     xlim([0 6])
+     title('Original source 2')
     
     prompt = {'Enter signal number:','Enter source number:'};
     dlg_title = 'Signal / Input comparison';
@@ -137,9 +163,7 @@ if(ismember(3,execExperiments))
     norm2 = source2/10;
 
      icaplot('complot', signal, 0, 0, 0, 'Original Signals')
-     pause;
      icaplot('complot', mixedsig, 0, 0, 0, 'Mixed Signals')
-     pause;
      icaplot('complot', decompose, 0, 0, 0, 'Decomposed Signals')
     
      prompt = {'Enter signal number:','Enter source number:'};
@@ -184,9 +208,7 @@ if(ismember(4,execExperiments))
     norm2 = source2/10;
 
     icaplot('complot', noisySignal, 0, 0, 0, 'Original noisy Signals')
-    pause;
     icaplot('complot', mixedNoisySignals, 0, 0, 0, 'Mixed noisy Signals')
-    pause;
     icaplot('complot', decompose, 0, 0, 0, 'Decomposed Signals')
 
     prompt = {'Enter signal number:','Enter source number:'};
@@ -230,9 +252,7 @@ if(ismember(5,execExperiments))
     norm2 = source2/10;
 
     icaplot('complot', signal, 0, 0, 0, 'Original Signals')
-    pause;
     icaplot('complot', noisyMix, 0, 0, 0, 'Noisy mixed Signals')
-    pause;
     icaplot('complot', decompose, 0, 0, 0, 'Decomposed Signals')
 
     prompt = {'Enter signal number:','Enter source number:'};
