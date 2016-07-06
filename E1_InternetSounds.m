@@ -57,21 +57,3 @@ subplot(3,2,6)
  ylim([-1 1])
  xlim([0 6])
  title('Original source 2')
-
-prompt = {'Enter signal number:','Enter source number:'};
-dlg_title = 'Signal / Input comparison';
-num_lines = 1;
-
-pause;
-answer = inputdlg(prompt,dlg_title,num_lines);
-    n1 = str2num(answer{1});
-    n2 = str2num(answer{2});
-
-while n1 > 0
-    icaplot('sumerror', signal, n1, decompose, n2, 0, 0, 'Error comparison')
-    pause;
-
-    answer = inputdlg(prompt,dlg_title,num_lines);
-    n1 = str2num(answer{1});
-    n2 = str2num(answer{2});
-end
