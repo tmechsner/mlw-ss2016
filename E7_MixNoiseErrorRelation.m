@@ -1,4 +1,4 @@
-clear; clc; close all;
+clear; clc;
 addpath('fastica');
 addpath('drtoolbox');
 addpath('drtoolbox/techniques');
