@@ -22,7 +22,3 @@ icaplot('complot', decompose, 0, 0, 0, 'Decomposed Signals')
 
 [meanErrors, stdErrors] = matchAndEval(signal, decompose);
 fprintf('Total mean error is %f, std deviation is %f\n', mean(meanErrors), mean(stdErrors));
-
-pause;
-
-close all;

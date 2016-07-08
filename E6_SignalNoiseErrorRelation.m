@@ -27,5 +27,5 @@ for i = 0.0 : 0.5 : 5.0
 end
 figure
 subplot(1,1,1)
-    plot(steps, errors, steps, stds);
-    title('Errors and standard deviations - signal noise rate');
+plot(steps, errors, steps, stds);
+title('Errors and standard deviations - signal noise rate');
